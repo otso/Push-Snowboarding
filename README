@@ -1,0 +1,7 @@
+Compiling without Bluetooth
+---------------------------
+
+in PushBurton2.pro:
+
+	DEFINES += NO_BLUETOOTH # This e.g. for Linux compilation
+
