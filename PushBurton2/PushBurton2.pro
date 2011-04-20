@@ -128,7 +128,7 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     liveview.ui
 
-CONFIG   += mobility
+CONFIG   += mobility no_bluetooth
 MOBILITY = location sensors
 
 #LIBS += -lQBluetooth
@@ -141,13 +141,17 @@ symbian {
 
     INCLUDEPATH += /epoc32/include/QBlueTooth
 
-    LIBS += -lQBluetooth \
-        -leikcoctl \
+    LIBS += -leikcoctl \
         -lavkon \
         -leikcore \
         -leiksrv \
         -lcone \
         -ltzclient
+
+no_bluetooth {
+} else {
+     LIBS +=  -lQBluetooth
+}
 
     TARGET.CAPABILITY = \
         LocalServices \
