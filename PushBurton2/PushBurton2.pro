@@ -128,7 +128,7 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     liveview.ui
 
-CONFIG   += mobility no_bluetooth
+CONFIG   += mobility no_bluetooth # no_bluetooth self defined
 MOBILITY = location sensors
 
 #LIBS += -lQBluetooth
@@ -175,7 +175,10 @@ no_bluetooth {
         pushn8gsrdevice.cpp \
         pushn8footdevice.cpp
 
+no_bluetooth {
+} else {
     addFiles.sources = $(EPOCROOT)Epoc32/release/$(PLATFORM)/$(CFG)/QBluetooth.dll
+}
     addFiles.path = /sys/bin
     DEPLOYMENT += addFiles
 
