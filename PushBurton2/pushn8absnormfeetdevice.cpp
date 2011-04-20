@@ -58,12 +58,16 @@ bool PushN8AbsNormFeetDevice::subscribesToAny()
 
 bool PushN8AbsNormFeetDevice::subscribesTo(PushBurtonGenericDevice* deviceType)
 {
+#ifndef NO_BLUETOOTH
     if(typeid(*deviceType) == typeid(PushN8FootDevice))
     {
         return true;
     } else {
         return false;
     }
+#else
+    return false;
+#endif
 }
 
 QString PushN8AbsNormFeetDevice::get_description()

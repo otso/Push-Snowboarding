@@ -27,6 +27,7 @@
 
 #include "pushn8btdevice.h"
 
+#ifndef NO_BLUETOOTH
 PushN8BtDevice::PushN8BtDevice(QBtDevice a_device, QObject *parent) :
     PushBurtonGenericDevice(parent)
 {
@@ -230,3 +231,4 @@ bool PushN8BtDevice::getPackage(QString data, QStringList& result)
         return false;
     }
 }
+#endif

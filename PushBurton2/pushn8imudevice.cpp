@@ -27,6 +27,7 @@
 
 #include "pushn8imudevice.h"
 
+#ifndef NO_BLUETOOTH
 PushN8IMUDevice::PushN8IMUDevice(QBtDevice a_device, QObject *parent) :
         PushN8BtDevice(a_device, parent)
 {
@@ -78,4 +79,4 @@ void PushN8IMUDevice::gotDataReceived(QString data)
     }
 
 }
-
+#endif

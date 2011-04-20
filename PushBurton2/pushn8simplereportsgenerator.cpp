@@ -122,12 +122,14 @@ bool PushN8SimpleReportsGenerator::subscribesToAny()
 
 bool PushN8SimpleReportsGenerator::subscribesTo(PushBurtonGenericDevice* deviceType)
 {
-    if(typeid(*deviceType) == typeid(PushN8GSRDevice)){
+    if(typeid(*deviceType) == typeid(PushN8PhoneGPS)){
         return true;
-    } else if(typeid(*deviceType) == typeid(PushN8PhoneGPS)){
+#ifndef NO_BLUETOOTH
+    } else if(typeid(*deviceType) == typeid(PushN8GSRDevice)){
         return true;
     } else if(typeid(*deviceType) == typeid(PushN8HeartDevice)){
         return true;
+ #endif
     } else {
         return false;
     }

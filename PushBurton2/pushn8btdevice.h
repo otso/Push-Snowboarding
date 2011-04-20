@@ -28,6 +28,7 @@
 #ifndef PUSHN8BTDEVICE_H
 #define PUSHN8BTDEVICE_H
 
+#ifndef NO_BLUETOOTH
 #include <QObject>
 #include <QDebug>
 
@@ -99,8 +100,8 @@ public slots:
     void connectionResetByPeer();
     void lost_signal();
     void regained_signal();
-
 #endif
 };
+#endif
 
 #endif // PUSHN8BTDEVICE_H

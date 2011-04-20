@@ -318,8 +318,10 @@ bool PushN8AirTimeDetector::subscribesTo(PushBurtonGenericDevice* deviceType)
         return true;
     } else if(typeid(*deviceType) == typeid(PushN8PhoneAcc)){
         return true;
+#ifndef NO_BLUETOOTH
     } else if(typeid(*deviceType) == typeid(PushN8IMUDevice)){
         return true;
+#endif
     } else {
         return false;
     }

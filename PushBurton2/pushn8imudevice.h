@@ -28,6 +28,7 @@
 #ifndef PUSHN8IMUDEVICE_H
 #define PUSHN8IMUDEVICE_H
 
+#ifndef NO_BLUETOOTH
 #include <QString>
 #include <QObject>
 #include "pushn8btdevice.h"
@@ -51,5 +52,6 @@ private:
 
 #endif
 };
+#endif
 
 #endif // PUSHN8IMUDEVICE_H

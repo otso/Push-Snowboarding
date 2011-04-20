@@ -27,6 +27,7 @@
 
 #include "pushn8heartdevice.h"
 
+#ifndef NO_BLUETOOTH
 PushN8HeartDevice::PushN8HeartDevice(QBtDevice a_device, QObject *parent) :
         PushN8BtDevice(a_device, parent)
 {
@@ -66,3 +67,4 @@ void PushN8HeartDevice::gotDataReceived(QString data)
         }
     }
 }
+#endif

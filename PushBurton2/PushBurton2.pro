@@ -32,6 +32,7 @@ QT      += xml
 TARGET = PushBurton2
 TEMPLATE = app
 
+DEFINES += NO_BLUETOOTH # This e.g. for Linux compilation
 
 SOURCES += main.cpp\
         mainwindow.cpp \

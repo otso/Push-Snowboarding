@@ -28,6 +28,7 @@
 #ifndef PUSHN8FOOTDEVICE_H
 #define PUSHN8FOOTDEVICE_H
 
+#ifndef NO_BLUETOOTH
 #include <QString>
 #include <QObject>
 #include "pushn8btdevice.h"
@@ -52,5 +53,6 @@ public slots:
     void gotDataReceived(QString);
 #endif
 };
+#endif
 
 #endif // PUSHN8FOOTDEVICE_H
