@@ -27,7 +27,7 @@
 
 
 QT       += core gui
-QT      += xml
+QT      += xml network
 
 TARGET = PushBurton2
 TEMPLATE = app
@@ -77,7 +77,8 @@ SOURCES += main.cpp\
     graphicsreportview.cpp \
     graphicslidingdownbts.cpp \
     liveview.cpp \
-    graphicssettings.cpp
+    graphicssettings.cpp \
+    LogSender.cpp
 
 HEADERS  += mainwindow.h \
     graphicpixmapbt.h \
@@ -123,7 +124,8 @@ HEADERS  += mainwindow.h \
     graphicslidingdownbts.h \
     liveview.h \
     graphicssettings.h \
-    FilesystemConventions.h
+    FilesystemConventions.h \
+    LogSender.h
 
 FORMS    += mainwindow.ui \
     liveview.ui

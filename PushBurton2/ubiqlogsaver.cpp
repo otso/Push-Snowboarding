@@ -27,6 +27,12 @@
 
 #include "ubiqlogsaver.h"
 
+#include "LogSender.h"
+
+namespace {
+    const int TICK_BUFFER_SIZE = 100;
+}
+
 UbiqLogSaver::UbiqLogSaver(uint a_start_time)
 {
     start_time = a_start_time;
@@ -38,13 +44,23 @@ UbiqLogSaver::UbiqLogSaver(uint a_start_time)
 
     dataFile = new QFile(rawLogFilename);
 
-
     dataFile->open(QFile::WriteOnly | QFile::Text);
     xml.setDevice(dataFile);
     xml.setAutoFormatting(true);
 
     xml.writeStartDocument();
     xml.writeStartElement("N8SensorsLog");
+
+    // The buffer to be sent online
+    this->bufferFile = new QBuffer();
+    this->bufferFile->open(QBuffer::ReadWrite);
+
+    this->bufferXml.setDevice(this->bufferFile);
+    this->bufferXml.setAutoFormatting(true);
+
+    this->tickBufferCount = 0;
+
+    this->sender = new LogSender();
 
     runEnd = false;
     this->start();
@@ -74,6 +90,14 @@ void UbiqLogSaver::run()
             ticksLock.unlock();
             tick->dump_to_xml(xml);
             dataFile->flush();
+
+            tick->dump_to_xml(this->bufferXml);
+            this->tickBufferCount++;
+            if(this->tickBufferCount == TICK_BUFFER_SIZE) {
+                this->sendResults();
+                this->tickBufferCount = 0;
+            }
+
             ticksLock.lock();
         }
         ticksLock.unlock();
@@ -99,6 +123,8 @@ void UbiqLogSaver::run()
 
 void UbiqLogSaver::run_end()
 {
+    // TODO call here send for the rest of the ticks to be reported and send
+    // (end came after TICK_BUFFER_SIZE full)
     if(runEnd)
         return;
     qDebug() << "before signaling exit";
@@ -112,6 +138,8 @@ void UbiqLogSaver::run_end()
     xml.writeEndElement();//N8SensorsLog
     xml.writeEndDocument();
     dataFile->close();
+    this->bufferFile->close();
+    this->tickBufferCount = 0;
     qDebug() << "File closed";
 }
 
@@ -121,11 +149,25 @@ void UbiqLogSaver::CreateRunDir()
 
     dirName += QString::number(start_time);
     dirName += QDateTime::fromTime_t(start_time).toString("_hhmm");
-    QFSFileEngine fse;
-    if(!fse.mkdir(dirName, false))
+    if(!QDir().mkpath(dirName))
         qDebug() << "Could not create run directory";
 }
 
+void UbiqLogSaver::sendResults()
+{
+    qDebug() << "Ticks in buffer: " << this->tickBufferCount;
+    qDebug() << "Size: " << this->bufferFile->size();
+
+    this->sender->setTextToSend(QString(this->bufferFile->buffer()));
+    this->sender->start();
+
+    this->bufferFile->close();
+    this->bufferFile->setBuffer(0);
+    this->bufferFile->open(QBuffer::ReadWrite);
+
+    qDebug() << "Buffer after close/open: " << QString(this->bufferFile->buffer());
+    qDebug() << "Size: " << this->bufferFile->size();
+}
 
 void UbiqLogSaver::log_tick_in(NPushLogTick* tick)
 {

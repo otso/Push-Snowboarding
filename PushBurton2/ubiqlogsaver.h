@@ -34,13 +34,17 @@
 #include <QWaitCondition>
 #include <QQueue>
 #include <QFile>
-#include <QFSFileEngine>
+#include <QBuffer>
+//#include <QFSFileEngine>
+#include <QDir>
 #include <QXmlStreamWriter>
 
 #include "FilesystemConventions.h"
 
 #include "npushlogtick.h"
 #include "npushgenreport.h"
+
+class LogSender;
 
 class UbiqLogSaver : public QThread
 {
@@ -58,6 +62,7 @@ public slots:
 
 private:
     void CreateRunDir();
+    void sendResults();
     QQueue<NPushLogTick*> ticksBuffer;
     QQueue<NPushGenReport*> reportBuffer;
 
@@ -75,6 +80,13 @@ private:
 
     QFile* dataFile;
     QXmlStreamWriter xml;
+
+    // For online reporting:
+    int tickBufferCount;
+    QBuffer* bufferFile;
+    QXmlStreamWriter bufferXml;
+
+    LogSender* sender;
 };
 
 #endif // UBIQLOGSAVER_H
