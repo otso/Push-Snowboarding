@@ -1,5 +1,3 @@
-#include <QtCore>
-#include <QtNetwork>
 #include <QByteArray>
 
 #include "LogSender.h"
@@ -60,13 +58,18 @@ void LogSender::run()
 
     qDebug("Sending request.............");
 
-    QUrl url("http://pistelogs.appspot.com/test/post");
+    QUrl url("http://pistelogs.appspot.com/api/depositlog");
     QNetworkRequest request(url);
     request.setRawHeader("Host", "pistelogs.appspot.com");
 
     QByteArray postData;
-    postData.append(this->textToSend.toUtf8());
+    QUrl params;
+    params.addQueryItem("log_data", this->textToSend);
+    params.addQueryItem("user_id","john");
+    postData = params.encodedQuery();
+
     request.setHeader(QNetworkRequest::ContentLengthHeader, postData.size());
+    request.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
     QNetworkReply *reply = m_networkManager->post(request, postData);
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
                     this, SLOT(slotError(QNetworkReply::NetworkError)));

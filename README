@@ -1,3 +1,11 @@
+Remote compiler settings:
+-------------------------
+
+ * Symbian^3 v.0.9
+ * Qt 4.6.3 with Mobility 1.0.2
+ * Signed (no certs needed but needs to be opted)
+
+
 Compiling without Bluetooth
 ---------------------------
 
