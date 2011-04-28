@@ -123,8 +123,6 @@ void UbiqLogSaver::run()
 
 void UbiqLogSaver::run_end()
 {
-    // TODO call here send for the rest of the ticks to be reported and send
-    // (end came after TICK_BUFFER_SIZE full)
     if(runEnd)
         return;
     qDebug() << "before signaling exit";
@@ -138,6 +136,7 @@ void UbiqLogSaver::run_end()
     xml.writeEndElement();//N8SensorsLog
     xml.writeEndDocument();
     dataFile->close();
+    this->sendResults();
     this->bufferFile->close();
     this->tickBufferCount = 0;
     qDebug() << "File closed";
