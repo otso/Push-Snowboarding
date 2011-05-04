@@ -83,6 +83,7 @@ private:
 
     // For online reporting:
     int tickBufferCount;
+    QString runGUID;
     QBuffer* bufferFile;
     QXmlStreamWriter bufferXml;
 

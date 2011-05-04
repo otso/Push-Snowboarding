@@ -14,6 +14,7 @@ public:
     bool init();
     void deInit();
     void setTextToSend(const QString& text);
+    void setGUID(const QString& guid);
 
     virtual void run();
 signals:
@@ -26,6 +27,7 @@ private slots:
 private:
     QNetworkAccessManager *m_networkManager;
     QString textToSend;
+    QString runGUID;
 };
 
 #endif // LOGSENDER_H

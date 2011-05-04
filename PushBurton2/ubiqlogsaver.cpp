@@ -25,6 +25,8 @@
  *
  */
 
+#include <QUuid>
+
 #include "ubiqlogsaver.h"
 
 #include "LogSender.h"
@@ -59,6 +61,7 @@ UbiqLogSaver::UbiqLogSaver(uint a_start_time)
     this->bufferXml.setAutoFormatting(true);
 
     this->tickBufferCount = 0;
+    this->runGUID = QUuid::createUuid().toString();
 
     this->sender = new LogSender();
 
@@ -158,6 +161,7 @@ void UbiqLogSaver::sendResults()
     qDebug() << "Size: " << this->bufferFile->size();
 
     this->sender->setTextToSend(QString(this->bufferFile->buffer()));
+    this->sender->setGUID(this->runGUID);
     this->sender->start();
 
     this->bufferFile->close();

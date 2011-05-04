@@ -45,6 +45,12 @@ void LogSender::setTextToSend(const QString &text)
 	qDebug() << "Text to send set to: " << this->textToSend;
 }
 
+void LogSender::setGUID(const QString &guid)
+{
+	this->runGUID = QString(guid);
+	qDebug() << "GUID set to: " << this->runGUID;
+}
+
 void LogSender::run()
 {
 	if(m_networkManager!=NULL)
@@ -59,14 +65,20 @@ void LogSender::run()
     qDebug("Sending request.............");
 
     QUrl url("http://pistelogs.appspot.com/api/depositlog");
+
     QNetworkRequest request(url);
+
     request.setRawHeader("Host", "pistelogs.appspot.com");
 
     QByteArray postData;
     QUrl params;
     params.addQueryItem("log_data", this->textToSend);
+    params.addQueryItem("run_guid", this->runGUID);
     params.addQueryItem("user_id","john");
     postData = params.encodedQuery();
+
+    // Following was needed during debug:
+    //qRegisterMetaType<QNetworkReply::NetworkError>("QNetworkReply::NetworkError");
 
     request.setHeader(QNetworkRequest::ContentLengthHeader, postData.size());
     request.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
